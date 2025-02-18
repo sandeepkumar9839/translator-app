@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>translator english to hindi</title>
+    <style>
+        div{
+            border-radius: 10px;
+            background-color: gray;
+            /* box-shadow: 10px 10px grey; */
+        }
+        button{
+            font-size: 20px;
+            border-radius: 5px;
+            border: 1px solid white;
+
+        }
+        input{
+            font-size: 20px;
+            border: 1px solid white;
+        }
+        #meaning{
+            font-size: 20px;
+        }
+    </style>
+    <script>
+       async function getMeaning(){
+            const word= document.getElementById("wordinput").value;
+            console.log(word);
+            const url=`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
+            try{
+                const response= await fetch(url);
+                console.log(response);
+                const data= await response.json();
+                // console.log(data);
+                if(response.ok){
+                    const meaning=data[0].meanings[0].definitions[0].definition;
+                    console.log(meaning);
+                    document.getElementById("meaning").innerHTML=meaning;
+                    document.getElementById("meaning").style.color="red";
+                }
+                else{
+                    document.getElementById("meaning").textContent="Word is not found";
+                }
+            }
+            catch(error){
+                document.getElementById("meaning").textContent= "error fetching data";
+            }
+        }
+    </script>
+</head>
+<body>
+    <center>
+        <div style="width: 30%; border: 2px solid rgb(227, 222, 222);margin-top: 20%;">
+    <h1>word meaning finder</h1>
+    <input type="text"placeholder="Enter a word" id="wordinput">
+    <button onclick="getMeaning()">Get Meaning</button>
+    <h2>Meaning:</h2>
+    <p id="meaning"></p>
+</div>
+</center>
+</body>
+</html>
